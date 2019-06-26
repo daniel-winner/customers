@@ -2,8 +2,8 @@ package com.crm.customers.dao;
 
 public class ReturnObject {
     private int code;
-    private int count;
     private String msg;
+    private int count;
     private Object data;
 
     public int getCode() {
@@ -36,5 +36,15 @@ public class ReturnObject {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "ReturnObject{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", count=" + count +
+                ", data=" + data +
+                '}';
     }
 }

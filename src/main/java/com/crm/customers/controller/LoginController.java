@@ -1,5 +1,6 @@
 package com.crm.customers.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.crm.customers.dao.BaseUserDao;
 import com.crm.customers.dao.ReturnObject;
 import com.crm.customers.entity.BaseUser;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -34,7 +34,7 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "loginIn", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnObject login(HttpServletResponse response) throws IOException {
+    public Object login(HttpServletResponse response) throws IOException {
 //        log.info("username:{},password:{}",user.getUsername(),user.getPassword());
         ReturnObject returnObject = new ReturnObject();
         String username = getParameter("username");
@@ -47,7 +47,7 @@ public class LoginController extends BaseController {
                     returnObject.setCode(200);
                     returnObject.setMsg("登录成功");
                     response.sendRedirect("admin");
-                    setSession(UUID.randomUUID().toString(),"");
+//                    setSession(UUID.randomUUID().toString(),"");
                 } else {
                     returnObject.setCode(500);
                     returnObject.setMsg("密码校验失败，请重试");
@@ -65,7 +65,7 @@ public class LoginController extends BaseController {
             response.sendRedirect("login_err");
         }
 
-        log.info(returnObject.toString());
+
         return returnObject;
     }
 }

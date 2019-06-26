@@ -1,5 +1,6 @@
 package com.crm.customers.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.crm.customers.dao.CustomerInterviewDao;
 import com.crm.customers.dao.ReturnObject;
 import com.crm.customers.entity.CustomerInterview;
@@ -11,10 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
+/**
+ * Author dxf
+ * 公海库 客户回访
+ */
 @Controller
 @RequestMapping("/crm/customer")
 @Slf4j
-public class CustomerController {
+public class CustomerController extends BaseController{
 
 
     @Autowired
@@ -22,22 +27,25 @@ public class CustomerController {
 
     @RequestMapping("/interviewlist")
     @ResponseBody
-    public Object getList(){
+    public String getList(){
+        Enumeration<String> names = getRequest().getParameterNames();
+        log.info(names.toString());
+        String page = getParameter("page");
+        String limit = getParameter("limit");
         ReturnObject returnObject = new ReturnObject();
+        JSONObject jsonObject = new JSONObject();
+
         returnObject.setCode(0);
-        log.info("=========================================");
-        List<CustomerInterview> all = customerInterviewDao.findAllOrderByCreateTime(0, 10);
-        all.forEach(CustomerInterview-> log.info(CustomerInterview.toString()));
-        returnObject.setData(all);
+        returnObject.setMsg("1111");
+        List<CustomerInterview> all = customerInterviewDao.findAllOrderByCreateTime(0, Integer.parseInt(limit));
+        returnObject.setCount(all.size());
+        jsonObject.put("status",0);
+        jsonObject.put("message","返回数据");
+        jsonObject.put("total",all.size());
+        jsonObject.put("data",all);
 
-        return returnObject;
+        return jsonObject.toString();
     }
 
-    public static List<String> getObject(){
-        List<String> arrayList = new ArrayList<>();
-        for (int i =0 ;i<10 ;i++){
-            arrayList.add("value_"+i);
-        }
-        return arrayList;
-    }
+
 }
