@@ -30,7 +30,9 @@ public abstract class BaseController {
 	public final static String USER_ID="userId";
 	
 	public final static String USER_NAME="userName";
-	
+
+	public final static String USER_SESSION="USER_SESSION";
+
 	public final static String DOWNLOAD_SQL="sql";
 	
 	public final static String DOWNLOAD_PARAMETER="parameter";

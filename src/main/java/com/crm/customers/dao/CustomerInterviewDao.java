@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface CustomerInterviewDao extends JpaRepository<CustomerInterview,String> {
 
-    @Query(value = "select * from customer_interview order by create_time limit :offset,:limit",nativeQuery = true)
+    @Query(value = "select * from customer_interview order by create_time desc limit :offset,:limit",nativeQuery = true)
     List<CustomerInterview> findAllOrderByCreateTime(@Param("offset")Integer offerset,@Param("limit") Integer limit);
 }

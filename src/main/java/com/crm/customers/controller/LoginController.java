@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -42,12 +43,14 @@ public class LoginController extends BaseController {
         if (StringUtils.isNotBlank(username) || StringUtils.isNotBlank(password)) {
             String code = MD5Util.getMD5Code(username + password);
             BaseUser user = baseUserDao.findBaseUserByUsername(username);
+
             if (user != null) {
                 if (code.equals(user.getPassword())) {
                     returnObject.setCode(200);
                     returnObject.setMsg("登录成功");
                     response.sendRedirect("admin");
-//                    setSession(UUID.randomUUID().toString(),"");
+                    setSession("USER_SESSION",user);
+
                 } else {
                     returnObject.setCode(500);
                     returnObject.setMsg("密码校验失败，请重试");

@@ -38,4 +38,5 @@ public interface BaseUserService {
 	
 	public Page<BaseUser> findEntityPage(BaseUser entity, Pageable pageable);
 
+	public void addUserErrorCountByUsername(String username);
 }

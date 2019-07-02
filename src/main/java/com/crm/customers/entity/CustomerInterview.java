@@ -1,5 +1,7 @@
 package com.crm.customers.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,8 +28,30 @@ public class CustomerInterview {
     private String result;
     @Column(name="user_id")
     private Integer userId;
+    @Column(name="user_name")
+    private String username;
     @Column(name="create_time")
+    
     private Date createTime;
+    @Column(name="view_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date viewTime;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Date getViewTime() {
+        return viewTime;
+    }
+
+    public void setViewTime(Date viewTime) {
+        this.viewTime = viewTime;
+    }
 
     public String getCustomerInterviewId() {
         return customerInterviewId;
@@ -113,6 +137,7 @@ public class CustomerInterview {
                 ", result='" + result + '\'' +
                 ", userId=" + userId +
                 ", createTime=" + createTime +
+                ", viewTime=" + viewTime +
                 '}';
     }
 }

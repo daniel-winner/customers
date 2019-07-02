@@ -20,7 +20,7 @@ public class BaseUser {
 	@Column(name="create_time")
 	private Date createTime;
 	@Column(name="phone_num")
-	private Integer phoneNum;
+	private String phoneNum;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -30,6 +30,8 @@ public class BaseUser {
 	private Integer userNo;
 	@Column(name="username")
 	private String username;
+	@Column(name="name")
+	private String name;
 	@Column(name="status")
 	private Integer status;
 
@@ -51,10 +53,10 @@ public class BaseUser {
 	public void setCreateTime(Date createTime){
 		this.createTime = createTime;
 	}
-	public Integer getPhoneNum(){
+	public String getPhoneNum(){
 		return phoneNum;
 	}
-	public void setPhoneNum(Integer phoneNum){
+	public void setPhoneNum(String phoneNum){
 		this.phoneNum = phoneNum;
 	}
 	public Integer getId(){
@@ -88,18 +90,27 @@ public class BaseUser {
 		this.status = status;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
-	public String toString(){
-		return "["
-		+ "password=" + getPassword()
-		+ ",updateTime=" + getUpdateTime()
-		+ ",createTime=" + getCreateTime()
-		+ ",phoneNum=" + getPhoneNum()
-		+ ",id=" + getId()
-		+ ",email=" + getEmail()
-		+ ",userNo=" + getUserNo()
-		+ ",username=" + getUsername()
-		+ ",status=" + getStatus()
-		+ "]";
+	public String toString() {
+		return "BaseUser{" +
+				"password='" + password + '\'' +
+				", updateTime=" + updateTime +
+				", createTime=" + createTime +
+				", phoneNum='" + phoneNum + '\'' +
+				", id=" + id +
+				", email='" + email + '\'' +
+				", userNo=" + userNo +
+				", username='" + username + '\'' +
+				", name='" + name + '\'' +
+				", status=" + status +
+				'}';
 	}
 }
