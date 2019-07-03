@@ -33,15 +33,35 @@ public class CustomerController extends BaseController{
     @RequestMapping("/interviewlist")
     @ResponseBody
     public String getList(){
+        JSONObject jsonObject = new JSONObject();
         String page = getParameter("page");
         String limit = getParameter("limit");
+        String phoneNum = getParameter("phoneNum");
         log.info(page+":"+limit);
-        JSONObject jsonObject = new JSONObject();
-        List<CustomerInterview> all = customerInterviewDao.findAllOrderByCreateTime( Integer.parseInt(page), Integer.parseInt(limit));
-        jsonObject.put("status",0);
-        jsonObject.put("message","返回数据");
-        jsonObject.put("total",customerInterviewDao.count());
-        jsonObject.put("data",all);
+        if(StringUtils.isNotBlank(page)&&StringUtils.isNotBlank(limit)) {
+            Integer page1 = Integer.parseInt(page);
+            Integer limit1 = Integer.parseInt(limit);
+            Integer offset = 0;
+            if(page1>1){
+                offset = (page1-1)*limit1;
+            }
+            List<CustomerInterview> all ;
+            Long count = 0l;
+            if(StringUtils.isNotBlank(phoneNum)){
+                all = customerInterviewDao.findLimitOrderByCreateTime(phoneNum,offset, Integer.parseInt(limit));
+                count = (long)customerInterviewDao.countByCalledNum(phoneNum);
+            }else {
+                all = customerInterviewDao.findLimitOrderByCreateTime(offset, Integer.parseInt(limit));
+                count = customerInterviewDao.count();
+            }
+            jsonObject.put("status",0);
+            jsonObject.put("message","返回数据");
+            jsonObject.put("total",count);
+            jsonObject.put("data",all);
+        }else{
+            jsonObject.put("status",0);
+            jsonObject.put("message","请求参数异常");
+        }
 
         return jsonObject.toString();
     }
@@ -61,15 +81,22 @@ public class CustomerController extends BaseController{
                         return returnObject;
                     }
                 }else {
-                    BaseUser session = (BaseUser)getSession(USER_SESSION);
-                    customer.setCustomerInterviewId(UUIDUtils.getUUID());
-                    customer.setUserId(session.getId());
-                    customer.setCreateTime(new Date());
-                    customer.setUsername(session.getUsername());
-                    customerInterviewDao.save(customer);
-                    returnObject.setCode(1);
+                    if(customer.getCalledNum().length()>18){
+                        returnObject.setCode(0);
+                        returnObject.setMsg("输入的联系号码过长，请重试");
+                    }else{
+                        BaseUser session = (BaseUser)getSession(USER_SESSION);
+                        customer.setCustomerInterviewId(UUIDUtils.getUUID());
+                        customer.setUserId(session.getId());
+                        customer.setCreateTime(new Date());
+                        customer.setUsername(session.getUsername());
+                        customerInterviewDao.save(customer);
+                        returnObject.setCode(1);
+                    }
                 }
             } catch (Exception e) {
+                returnObject.setCode(0);
+                returnObject.setMsg("系统异常，请重试或联系管理员");
                 e.printStackTrace();
             }
         }
